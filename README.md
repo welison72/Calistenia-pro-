@@ -4,14 +4,15 @@ name: Gerar APK Calistenia Pro
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'CalisteniaProAndroid.zip'
-      - '.github/workflows/build.yml'
+    branches:
+      - principal
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Baixar projeto
         uses: actions/checkout@v4
@@ -25,10 +26,10 @@ jobs:
       - name: Preparar Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Instalar ferramentas Android
+      - name: Instalar ferramentas
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Instalar Gradle
+      - name: Preparar Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
@@ -45,3 +46,4 @@ jobs:
           name: Calistenia-Pro-APK
           path: CalisteniaProAndroid/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          
